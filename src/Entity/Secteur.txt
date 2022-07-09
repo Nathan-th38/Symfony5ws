@@ -1,0 +1,90 @@
+<?php
+
+namespace App\Entity;
+
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
+
+/**
+ * Secteur
+ * @ORM\Table(name="secteur", uniqueConstraints={@ORM\UniqueConstraint(name="secteur_uq", columns={"LIBELLE"})})
+ * @ORM\Entity
+ * @ApiResource(normalizationContext={"groups"={"secteur"},"enable_max_depth"=true})
+ * @ApiFilter(RangeFilter::class, properties={"id"})
+ * @ApiFilter(SearchFilter::class, properties={"libelle": "partial"})
+ */
+class Secteur
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="ID", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"secteur","structure","secteurstructure"})
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="LIBELLE", type="string", length=100, nullable=false)
+     * @NotBlank(message="Libellé non renseigné")
+     * @Groups({"secteur","structure","secteurstructure"})
+     */
+    private $libelle;
+
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="SecteursStructures", mappedBy="idSecteur")
+     * @Groups({"secteur"})
+     * @MaxDepth(1)
+     */
+    private $secteursStructures;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getLibelle(): ?string
+    {
+        return $this->libelle;
+    }
+
+    public function setLibelle(string $libelle): self
+    {
+        $this->libelle = $libelle;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getSecteursStructures(): Collection
+    {
+        return $this->secteursStructures;
+    }
+
+    /**
+     * @param Collection $secteursStructures
+     */
+    public function setSecteursStructures(Collection $secteursStructures): void
+    {
+        $this->secteursStructures = $secteursStructures;
+    }
+
+    public function __toString() : string
+    {
+        return $this->id.' - '.$this->libelle;
+    }
+}
