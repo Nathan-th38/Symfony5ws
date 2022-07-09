@@ -2,6 +2,7 @@
 
 namespace App\Soap;
 
+use App\Entity\Categorie;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -79,4 +80,13 @@ class SoapOperations
         return $structu;
     }
 
+    /**
+     * Coucou de Nathan :)
+     * @param \App\Soap\CategorieSoap
+     * @return \App\Soap\CategorieSoap
+     */
+    public function getCategorieLibelle($cate) : CategorieSoap {
+        $categorie = $this->doct->getRepository(Categorie::class)->find($cate->id);
+        return new CategorieSoap($categorie->getId(), $categorie->getLibelle(), $categorie->getTexte());
+    }
 }
