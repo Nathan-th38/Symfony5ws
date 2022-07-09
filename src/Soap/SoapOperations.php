@@ -82,11 +82,11 @@ class SoapOperations
 
     /**
      * Coucou de Nathan :)
-     * @param \App\Soap\CategorieSoap
+     * @param int
      * @return \App\Soap\CategorieSoap
      */
-    public function getCategorieLibelle($cate) : CategorieSoap {
-        $categorie = $this->doct->getRepository(Categorie::class)->find($cate->id);
+    public function getCategorieLibelle($id) : CategorieSoap {
+        $categorie = $this->doct->getRepository(Categorie::class)->find($id);
         return new CategorieSoap($categorie->getId(), $categorie->getLibelle(), $categorie->getTexte());
     }
 }
