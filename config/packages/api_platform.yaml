@@ -10,7 +10,7 @@ api_platform:
         #jsonld:   ['application/ld+json']
         xml:      ['application/xml']
         html:     ['text/html']
-    title: 'Structures REST API'
+    title: 'Commande Manu_Nathan REST API'
     version: 1.0.0
     collection:
         pagination:
