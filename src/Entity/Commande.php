@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiFilter;
@@ -20,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="commande", indexes={@ORM\Index(name="IDX_6EEAA67DA76ED395", columns={"user_id"})})
  * @ORM\Entity
- * @ApiResource(normalizationContext={"groups"={"commande"},"enable_max_depth"=true})
+ * @ApiResource(normalizationContext={"groups"={"commande"},"enable_max_depth"=true}, denormalizationContext={"groups"={"commandeWrite"}})
  * @ApiFilter(RangeFilter::class, properties={"id"})
  * @ApiFilter(DateFilter::class, properties={"dateCommande"})
  * @ApiFilter(ExistsFilter::class, properties={"user"})
@@ -33,7 +34,7 @@ class Commande
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"produit","commande","lignecommande"})
+     * @Groups({"produit","commande","lignecommande","commandeWrite","lignecommandeWrite"})
      */
     private $id;
 
@@ -42,7 +43,7 @@ class Commande
      *
      * @ORM\Column(name="date_commande", type="date", nullable=false)
      * @NotNull(message="La date ne peut être null")
-     * @Groups({"commande","lignecommande"})
+     * @Groups({"commande","lignecommande","commandeWrite"})
      */
     private $dateCommande;
 
@@ -51,7 +52,7 @@ class Commande
      *
      * @ORM\Column(name="statut", type="string", length=255, nullable=false)
      * @NotBlank(message="Statut non renseigné")
-     * @Groups({"commande","lignecommande"})
+     * @Groups({"commande","lignecommande","commandeWrite"})
      */
     private $statut;
 
@@ -62,8 +63,6 @@ class Commande
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * })
-     * @NotNull(message="L'id de l'utilisateur ne peut être null")
-     * @Groups({"commande","lignecommande"})
      */
     private $user;
 

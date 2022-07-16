@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="ligne_commande", indexes={@ORM\Index(name="IDX_3170B74BF347EFB", columns={"produit_id"}), @ORM\Index(name="IDX_3170B74B9AF8E3A3", columns={"id_commande_id"})})
  * @ORM\Entity
- * @ApiResource(normalizationContext={"groups"={"lignecommande"},"enable_max_depth"=true})
+ * @ApiResource(normalizationContext={"groups"={"lignecommande"},"enable_max_depth"=true}, denormalizationContext={"groups"={"lignecommandeWrite"}})
  */
 class LigneCommande
 {
@@ -23,7 +23,7 @@ class LigneCommande
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"produit","commande","lignecommande"})
+     * @Groups({"produit","commande","lignecommande","lignecommandeWrite"})
      */
     private $id;
 
@@ -31,7 +31,7 @@ class LigneCommande
      * @var int
      *
      * @ORM\Column(name="quantite", type="integer", nullable=false)
-     * @Groups({"produit","commande","lignecommande"})
+     * @Groups({"produit","commande","lignecommande","lignecommandeWrite"})
      */
     private $quantite;
 
@@ -39,7 +39,7 @@ class LigneCommande
      * @var int
      *
      * @ORM\Column(name="prix", type="integer", nullable=false)
-     * @Groups({"produit","commande","lignecommande"})
+     * @Groups({"produit","commande","lignecommande","lignecommandeWrite"})
      */
     private $prix;
 
@@ -51,7 +51,7 @@ class LigneCommande
      *   @ORM\JoinColumn(name="id_commande_id", referencedColumnName="id")
      * })
      * @ApiSubresource
-     * @Groups({"produit","lignecommande"})
+     * @Groups({"produit","lignecommande","lignecommandeWrite"})
      * @MaxDepth(1)
      */
     private $idCommande;
@@ -64,7 +64,7 @@ class LigneCommande
      *   @ORM\JoinColumn(name="produit_id", referencedColumnName="id")
      * })
      * @ApiSubresource
-     * @Groups({"commande","lignecommande"})
+     * @Groups({"commande","lignecommande","lignecommandeWrite"})
      * @MaxDepth(1)
      */
     private $produit;
@@ -148,5 +148,4 @@ class LigneCommande
     {
         $this->produit = $produit;
     }
-
 }

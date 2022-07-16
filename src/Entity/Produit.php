@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="produit", indexes={@ORM\Index(name="IDX_29A5EC27BCF5E72D", columns={"categorie_id"})})
  * @ORM\Entity
- * @ApiResource(normalizationContext={"groups"={"produit"},"enable_max_depth"=true})
+ * @ApiResource(normalizationContext={"groups"={"produit"},"enable_max_depth"=true}, denormalizationContext={"groups"={"produitWrite"}})
  * @ApiFilter(SearchFilter::class, properties={"libelle": "partial"})
  * @ApiFilter(RangeFilter::class, properties={"prix"})
  */
@@ -31,7 +31,7 @@ class Produit
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"produit","commande","lignecommande"})
+     * @Groups({"produit","lignecommande","produitWrite","lignecommandeWrite"})
      */
     private $id;
 
@@ -40,7 +40,7 @@ class Produit
      *
      * @ORM\Column(name="libelle", type="string", length=255, nullable=false)
      * @NotBlank(message="Libellé non renseigné")
-     * @Groups({"produit","lignecommande"})
+     * @Groups({"produit","lignecommande","produitWrite"})
      */
     private $libelle;
 
@@ -48,7 +48,7 @@ class Produit
      * @var string
      *
      * @ORM\Column(name="texte", type="string", length=255, nullable=false)
-     * @Groups({"produit","lignecommande"})
+     * @Groups({"produit","lignecommande","produitWrite"})
      */
     private $texte;
 
@@ -57,7 +57,7 @@ class Produit
      *
      * @ORM\Column(name="prix", type="integer", nullable=false)
      * @NotNull(message="Le prix ne peut être null")
-     * @Groups({"produit","lignecommande"})
+     * @Groups({"produit","lignecommande","produitWrite"})
      */
     private $prix;
 
@@ -68,7 +68,6 @@ class Produit
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="categorie_id", referencedColumnName="id")
      * })
-     * @Groups({"produit","lignecommande"})
      */
     private $categorie;
 
