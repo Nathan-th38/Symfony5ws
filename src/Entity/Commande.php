@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiFilter;
@@ -69,7 +68,7 @@ class Commande
     /**
      * @var Collection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\LigneCommande", mappedBy="idCommande")
+     * @ORM\OneToMany(targetEntity="App\Entity\LigneCommande", mappedBy="idCommande", cascade={"remove"})
      * @Groups({"commande"})
      * @MaxDepth(1)
      */
@@ -159,5 +158,16 @@ class Commande
     public function setLigneCommande(Collection $ligneCommande): void
     {
         $this->ligneCommande = $ligneCommande;
+    }
+
+    public function remove(LigneCommande $ligneCommande): self
+    {
+        if ($this->ligneCommande->removeElement($ligneCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($ligneCommande->getIdCommande() === $this) {
+                $ligneCommande->setIdCommande(null);
+            }
+        }
+        return $this;
     }
 }

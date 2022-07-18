@@ -74,7 +74,7 @@ class Produit
     /**
      * @var Collection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\LigneCommande", mappedBy="produit")
+     * @ORM\OneToMany(targetEntity="App\Entity\LigneCommande", mappedBy="produit", cascade={"remove"})
      * @Groups({"produit"})
      * @MaxDepth(1)
      */
@@ -180,5 +180,16 @@ class Produit
     public function setLigneCommande(Collection $ligneCommande): void
     {
         $this->ligneCommande = $ligneCommande;
+    }
+
+    public function remove(LigneCommande $ligneCommande): self
+    {
+        if ($this->ligneCommande->removeElement($ligneCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($ligneCommande->getProduit() === $this) {
+                $ligneCommande->setProduit(null);
+            }
+        }
+        return $this;
     }
 }
